@@ -1,0 +1,3 @@
+(ns fcts.core
+  (:refer-clojure :exclude [and]))
+
