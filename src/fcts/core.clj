@@ -15,16 +15,17 @@
                                           (if a
                                             (c/let [f (c/first a)]
                                               (recur (c/next a) (c/cons (c/list 'fcts.core/ev* f l)  na)))
-                                            na))))
-          for-gen (c/loop [a arg
-                           na '()]
-                     (if a
-                       (c/let [f (c/first a)]
-                         (recur (c/next a) (c/cons (c/list 'fcts.core/show-gen* f)  na)))
-                       na))]
+                                            na))))]
+    ;; for-gen (c/loop [a arg
+    ;;                        na '()]
+    ;;                  (if a
+    ;;                    (c/let [f (c/first a)]
+    ;;                      (recur (c/next a) (c/cons (c/list 'fcts.core/show-gen* f)  na)))
+    ;;                    na))
     `(fcts.core/construct* (cljs.core/fn [~l]
                              ~body)
-                           :gen (fcts.core/gen-merge ~@for-gen))))
+                           ;:gen (fcts.core/gen-merge ~@for-gen)
+                           )))
 
 (defmacro throw [& args]
   `(fcts.core/lift-macro throw ~@args))
@@ -117,10 +118,10 @@
     
 
     `(c/let [args-spec# (:gen ~opt)
-             dummy# (cljs.core/let [~@for-recursion-dummy]
-                      (cljs.core/let [~@liftdummy#]
-                        ~body))
-             ev-gen# (fcts.core/show-gen* dummy#)
+             ;; dummy# (cljs.core/let [~@for-recursion-dummy]
+             ;;          (cljs.core/let [~@liftdummy#]
+             ;;            ~body))
+             ;; ev-gen# (fcts.core/show-gen* dummy#)
              inter# (cljs.core/fn [l#]  
                       (cljs.core/with-meta
 
@@ -134,8 +135,10 @@
                         {:fct/? false :fct/fcn? true :fct/spec args-spec#}))]
         
        (fcts.core/construct* inter#
-                             :gen (fcts.core/gen-merge (fcts.core/show-gen* args-spec#)
-                                                       ev-gen#)))))
+                             ;; :gen
+                             ;; (fcts.core/gen-merge (fcts.core/show-gen* args-spec#)
+                             ;;                      ev-gen#)
+                             ))))
 
 
 (c/defmacro defn [name & sigs]
@@ -156,11 +159,12 @@
              [liftd# liftdummy#] (ds args#)
              rec# (c/rest (c/rest bindings))]
        
-       `(cljs.core/let [dummy# (cljs.core/let [~@liftdummy#] 
-                                 (fcts.core/let [~@rec#] ~body)) 
+       `(cljs.core/let [
+                        ;; dummy# (cljs.core/let [~@liftdummy#] 
+                        ;;          (fcts.core/let [~@rec#] ~body)) 
                         
-                        gen# (fcts.core/gen-merge (fcts.core/show-gen* ~val#)
-                                                  (fcts.core/show-gen* dummy#))
+                        ;; gen# (fcts.core/gen-merge (fcts.core/show-gen* ~val#)
+                        ;;                           (fcts.core/show-gen* dummy#))
                         
                         inter# (cljs.core/fn [l#]
                                  (cljs.core/let [~args# (fcts.core/ev* ~val# l#)]
@@ -169,7 +173,8 @@
                                                     l#))))]
           
           (construct* inter#
-                      :gen gen#))))))
+                      ;:gen gen#
+                      ))))))
 
 
 (c/defmacro ^{:doc "the loop macro"} loop

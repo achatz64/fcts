@@ -4,7 +4,7 @@
   (:require 
    [reagent.core :as r]
    [cljs.core :as c]))
-
+ 
 ;; preliminaries
 
 (c/enable-console-print!)
@@ -368,12 +368,11 @@
     (c/fn [& args] (construct*
                     (c/fn [l]
                       (c/apply (inter l) (c/map #(ev* % l) args)))
-                    :gen (c/apply gen-merge (c/conj (c/map show-gen*
-                                                           args)
-                                                    gen))))
+                    ))  ;;:gen (c/apply gen-merge (c/conj (c/map show-gen* args gen))
     {:fct/? true
      :fct/inter inter
-     :fct/gen gen}))
+     ;:fct/gen gen
+     }))
 
 (def ^{:private true} ex1-construct*
   (construct* (c/fn [l] (cljs-this l :a)))) 
@@ -419,15 +418,14 @@
     ^{:doc "fct object"} object]
    (c/let [key (if (c/keyword? key) [key] key)]
      (construct* (c/fn [l] (cljs-this l key))
-                 :gen (c/fn [] (c/let [o (cljs-obj {})
-                                       do (cljs-set o key (gen* object))]
-                                 o))))))
+                 ;:gen (c/fn [] (c/let [o (cljs-obj {}) do (cljs-set o key (gen* object))] o))
+                 ))))
 
-(def ^{:private true} ex1-var* 
-  (c/println (gen* (var* [:a :b] (c/rand-int 10)))))
+;; (def ^{:private true} ex1-var* 
+;;   (c/println (gen* (var* [:a :b] (c/rand-int 10)))))
 
-(def ^{:private true} ex2-var* 
-  (c/println (gen* (var* :a {:c (c/rand-int 10)}))))
+;; (def ^{:private true} ex2-var* 
+;;   (c/println (gen* (var* :a {:c (c/rand-int 10)}))))
 
 
 (c/defn ^{:doc "variable key construction"} key*
@@ -437,22 +435,21 @@
     ^{:doc "fct object used for generation"} object]
    (c/let [key (if (c/keyword? key) [key] key)]
      (construct* (c/fn [l] key)
-                 :gen (c/fn [] (c/let [o (cljs-obj {})
-                                       do (cljs-set o key (gen* object))]
-                                 o))))))
+                 ;:gen (c/fn [] (c/let [o (cljs-obj {}) do (cljs-set o key (gen* object))] o))
+                 ))))
 
-(def ^{:private true} ex1-key* 
-  (c/println (deps* (key* [:a :b] (c/rand-int 10)))))
+;; (def ^{:private true} ex1-key* 
+;;   (c/println (deps* (key* [:a :b] (c/rand-int 10)))))
 
-(def ^{:private true} ex2-key* 
-  (c/println (gen* (key* [:a :b] (c/rand-int 10)))))
+;; (def ^{:private true} ex2-key* 
+;;   (c/println (gen* (key* [:a :b] (c/rand-int 10)))))
 
 (c/defn ^{:doc "lifting clojure functions"} lift*
   [^{:doc "clojure function (not macro)"} clojure-fn]
   (construct* (c/fn [l] clojure-fn)))
 
-(def ^{:private true} ex1-lift*
-  (c/println (gen* ((lift* c/+) (var* :h (c/rand-int 10)) (var* :a (c/rand))))))
+;; (def ^{:private true} ex1-lift*
+;;   (c/println (gen* ((lift* c/+) (var* :h (c/rand-int 10)) (var* :a (c/rand))))))
 
 (def ^{:doc "converts expressions with vector and hash-maps to fct"} to-fct
   (lift* c/identity))
@@ -467,35 +464,35 @@
 (lift-cljs) ;; lifting all cljs functions 
 
 
-(def ^{:private true} ex3-var* 
-  (c/println  (gen* (list (var* :a (var* :b (rand-int 10)))
-                          (var* :c (var* :b (rand-int 10)))
-                          (var* :d (var* :b (rand-int 10)))))))
+;; (def ^{:private true} ex3-var* 
+;;   (c/println  (gen* (list (var* :a (var* :b (rand-int 10)))
+;;                           (var* :c (var* :b (rand-int 10)))
+;;                           (var* :d (var* :b (rand-int 10)))))))
 
 
 ;; have lifted some macros already 
-(def ^{:private true} ex2-if 
-  (c/println (gen* (fcts.core/if (and true (var* :a (rand-nth '(true false))))
-                     (fcts.core/do (println "Doing something...")
-                                   (var* :b "Yer!"))       
-                     "False?"))))   
+;; (def ^{:private true} ex2-if 
+;;   (c/println (gen* (fcts.core/if (and true (var* :a (rand-nth '(true false))))
+;;                      (fcts.core/do (println "Doing something...")
+;;                                    (var* :b "Yer!"))       
+;;                      "False?"))))   
 
-;; have defined fn
-(def ^{:private true} ex1-fn 
-  (c/println (gen* ((fn [] (var* :a (rand-int 100)))))))
+;; ;; have defined fn
+;; (def ^{:private true} ex1-fn 
+;;   (c/println (gen* ((fn [] (var* :a (rand-int 100)))))))
 
-(def ^{:private true} ex2-fn 
-  (c/println (gen* ((fn [[_ y]] y)
-                    (var* :a ["?" 7])))))
+;; (def ^{:private true} ex2-fn 
+;;   (c/println (gen* ((fn [[_ y]] y)
+;;                     (var* :a ["?" 7])))))
 
-(def ^{:private true} ex3-fn 
-  (c/println (gen* ((fn [{:keys [c]}] c)
-                    (var* :a {:c "r"})))))
+;; (def ^{:private true} ex3-fn 
+;;   (c/println (gen* ((fn [{:keys [c]}] c)
+;;                     (var* :a {:c "r"})))))
   
-; have defined let and defn
-(def ^{:private true} ex1-let 
-  (c/println (gen* (let [{:keys [c]} (var* :a {:c (rand-int 100)})]
-                     c))))
+;; ; have defined let and defn
+;; (def ^{:private true} ex1-let 
+;;   (c/println (gen* (let [{:keys [c]} (var* :a {:c (rand-int 100)})]
+;;                      c))))
 
 
 ;; loops
@@ -585,7 +582,8 @@
               
               (:fct/? m)
               {:args nil
-               :ret (gen* f)} ; to be changed to gen*                     
+               :ret (ev* f {})          ;(gen* f)
+               } ; to be changed to gen*                     
               
               (:fct/fcn? m)
               (if (c/not (c/or (c/= spec-structure {})
@@ -597,10 +595,10 @@
                 {:args []
                  :ret (f)})))))
 
-(c/defn gcheck* [f]
-  (check* (gen* f)))
+;; (c/defn gcheck* [f]
+;;   (check* (gen* f)))
 
-(def ex-gcheck (c/println (gcheck* (fn [x] {:gen (fn [] [(var* :a (rand-int 100))])} x))))
+;;(def ex-gcheck (c/println (gcheck* (fn [x] {:gen (fn [] [(var* :a (rand-int 100))])} x))))
 
 (c/defn ^{:doc "runs tests by using check*"} ftest*
 
@@ -747,17 +745,137 @@
 (c/time (test-loop 10000 fs))
 
 
+(def simplify (fn [e] 
+                (loop [x e
+                       r []]
+                  {:test (empty? x)
+                   :rec (let [[t] x
+                              {:keys [remainder same-type]} (find-same t x)
+                              sum  (add-term same-type)
+                              new-y (conj r sum)]
+                          (rec remainder new-y))
+                   :ret r})))
+
+
+(c/defn tsimp [] (ev* (simplify (element)) {}))
+
+
+(def c-simplify (c/fn [e] 
+                  (c/loop [x e
+                           r []]
+                    (if (c/empty? x)
+                      r
+                      (c/let [[t] x
+                              {:keys [remainder same-type]} (c-find-same t x)
+                              sum  (c-add-term same-type)
+                              new-y (c/conj r sum)]
+                        (recur remainder new-y))))))
+
+(c-simplify (c-element))
+
+(c/defn c-tsimp [] (c-simplify (c-element)))
+
+;; we could also use (s/coll-of element) 
+(def add (fn [& elements] 
+           (simplify (apply concat elements))))
+
+
+(def c-add (c/fn [& elements] 
+             (c-simplify (c/apply c/concat elements))))
+
+(c-add (c-element) (c-element))
+
+;; ;; multiplication of terms
+(def mult-term (lift* ((ev* rand-fn {}) (ev* element {}))))
+
+
+
+(def c-mult-term (ev* mult-term {}))
+
+
+
+(def mult (fn [& elements] 
+
+            (c/let [simple-mult1 (fn [t e] 
+                                 (loop [e e r []]
+                                   {:test (empty? e)
+                                    :rec (let [[s] e]
+                                           (rec (rest e) (concat (mult-term t s) r)))
+                                    :ret (simplify r)}))
+                    simple-mult  (fn [e1 e2] 
+                                   (loop [e1 e1 r []]
+                                     {:test (empty? e1)
+                                      :rec (let [[t] e1]
+                                             (rec (rest e1)
+                                                  (concat (simple-mult1 t e2)
+                                                          r)))
+                                      :ret (simplify r)}))]
+              
+              (if-else (empty? elements)
+                       []
+                       (loop [elements (rest elements)
+                              r (first elements)]
+                         {:test (empty? elements)
+                          :rec (let [[e] elements]
+                                 (rec (rest elements) (simple-mult r e)))
+                          :ret (simplify r)})))))
+
+
+(c/defn mt [] (ev* (mult (element) (element) (element))
+                   {}))
+
+
+
+(def c-mult (c/fn [& elements] 
+
+              (c/let [simple-mult1 (c/fn [t e] 
+                                     (c/loop [e e r []]
+                                       (if  (c/empty? e)
+                                         (c-simplify r)
+                                         (c/let [[s] e]
+                                           (recur (c/rest e) (c/concat (c-mult-term t s) r))))))
+                  simple-mult  (c/fn [e1 e2] 
+                                 (c/loop [e1 e1 r []]
+                                   (if (c/empty? e1)
+                                     (c-simplify r)
+                                     (c/let [[t] e1]
+                                       (recur (c/rest e1)
+                                              (c/concat (simple-mult1 t e2)
+                                                        r))))))]
+              
+                (if (c/empty? elements)
+                  []
+                  (c/loop [elements (c/rest elements)
+                           r (c/first elements)]
+                    (if (c/empty? elements)
+                      (c-simplify r)
+                      (c/let [[e] elements]
+                        (recur (c/rest elements) (simple-mult r e)))))))))
+
+
+(c/defn c-mt [] (c-mult (c-element) (c-element) (c-element)))
+
+(c/println  "Clojure:")
+(c/time (test-loop 100 c-mt))
+
+(c/println  "Best: 1400 ms")
+(c/time (test-loop 100 mt))
+
 
 
 ;; test
 (defonce show-atom (cljs-obj {}))
 
+(cljs-set show-atom :a "Here!")
+
 ;(cljs-set show-atom [:a] 5)
 
-(def g (var* :a (c/rand-int 30)))
+(def g (var* :a))
+
+;(c/println (ev* [:p g] show-atom))
 
 (c/defn show-component []
-  (gev* [:p g] show-atom))
+  (ev* [:p g] show-atom))
 
 (c/defn ^:export run []
   (r/render [show-component]
