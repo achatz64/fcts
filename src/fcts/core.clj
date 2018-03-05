@@ -51,6 +51,8 @@
 
 (c/defmacro do [& args] `(fcts.core/lift-macro do ~@args))
 
+(c/defmacro in [& args] `(fcts.core/lift-macro do ~@args))
+
 
 
 (c/defn ^{:doc "is the argument admissible?"} adm-arg?

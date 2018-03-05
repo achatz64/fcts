@@ -1,5 +1,5 @@
 (ns fcts.core
-  (:require-macros [fcts.core :refer [lift-cljs and or lazy-seq cond if-else fn let loop]])
+  (:require-macros [fcts.core :refer [lift-cljs and or lazy-seq cond if-else fn let loop in defn]])
   (:refer-clojure :exclude [->PersistentHashSet js->clj sort-by chunk-first print-meta? m3-hash-int pr-str* eduction tree-seq unchecked-remainder-int uuid seq reduce find-ns contains? every? ->ES6IteratorSeq keep-indexed ->PersistentQueueSeq subs set take-last bit-set qualified-keyword? ->Eduction ->ES6SetEntriesIterator -with-meta ->PersistentArrayMapIterator butlast unchecked-subtract-int -iterator take-nth first native-satisfies? seq? -sorted-seq-from println-str inst-ms iterate -empty newline -chunked-rest write-all fn? -prefer-method -assoc doall keyword-identical? prefers -js->clj dedupe ->ES6Iterator dissoc atom bit-shift-right -first peek aget -write iter mk-bound-fn last -default-dispatch-val pr namespace obj-map -conj = take vector? boolean bit-shift-left random-uuid any? rand-int aclone vreset! chunk dec ->TransformerIterator map juxt ->PersistentQueueIter < test rest ex-data -drop-first isa? boolean? -clone munge ->NeverEquiv re-seq char? make-hierarchy -reduce -count swap-vals! keep char mapcat unchecked-long some? unchecked-negate symbol-identical? reverse inst? range bit-count sort ->MetaFn unchecked-inc-int -compare map-indexed array-list rand-nth comp array-chunk dispatch-fn bit-shift-right-zero-fill -as-transient dorun pr-sequential-writer simple-symbol? disj ->UUID ->MultiIterator cons ->HashSetIter floats pos? fnil merge-with nthrest -find sequential? m3-mix-H1 ->TransientArrayMap prim-seq shuffle hash-keyword find alength bit-xor ->IndexedSeq unsigned-bit-shift-right neg? -remove-method ->StringIter js-invoke ->List m3-mix-K1 unchecked-float undefined? reduced? apply-to disj! -lookup float? booleans ->ArrayList int-array set? iterable? cat ->ES6EntriesIterator -pr-writer flush set-from-indexed-seq take-while vary-meta is_proto_ <= conj! -pop repeatedly zipmap reset-vals! -remove-watch remove ->BitmapIndexedNode * re-pattern min -persistent! -nth pop! chunk-append prn-str reversible? -realized? -add-watch -deref-with-timeout conj -sorted-seq transduce -swap! js-delete truth_ array-index-of ->MultiFn key->js compare-and-set! array-seq interleave print-map map? get identity into long double volatile? -key nfirst meta -kv-reduce bit-and-not var? -comparator unchecked-add-int hash-ordered-coll reset-meta! ->KeySeq cycle -deref empty? short -clj->js -chunked-first filterv ->TaggedLiteral hash quot ns-interns* unchecked-double ->ChunkedCons ranged-iterator key longs not= set-print-err-fn! string? uri? es6-iterator pr-str-with-opts ->RecordIter ->Symbol unchecked-multiply-int chunk-rest remove-all-methods trampoline double? vec -notify-watches int ->ValSeq rand second find-ns-obj hash-combine > -name replace int? ->Subvec associative? unchecked-int js-keys inst-ms* keyword? array-iter force group-by -rseq prn default-dispatch-val ->Atom unchecked-multiply even? es6-iterator-seq unchecked-dec persistent-array-map-seq tagged-literal? double-array create-ns ->EmptyList spread rseq ex-cause ex-message ->NodeIterator string-print float pr-str es6-set-entries-iterator concat -methods symbol to-array-2d ExceptionInfo mod pop -entry-key dissoc! reductions indexed? - -equiv ->RangeIterator ->ArrayNode assoc! hash-set reduce-kv reset! name ->RedNode ffirst ->ArrayNodeIterator sorted-set ->PersistentTreeMap counted? tagged-literal println assoc-in bit-test ->Namespace ->PersistentHashMap memoize alter-meta! ->StringBufferWriter zero? simple-keyword? -assoc-n unchecked-dec-int persistent! set-print-fn! nnext add-watch not-every? rem ifind? ->t_cljs$core8988 ->HashMapIter ->NodeSeq some ->Box neg-int? drop js-obj nth sorted? nil? split-at prn-str-with-opts random-sample select-keys bit-and bounded-count update find-macros-ns list* ->Keyword update-in prefer-method ensure-reduced ->PersistentArrayMap instance? mix-collection-hash re-find run! val unchecked-add transformer-iterator not -vreset! with-meta unreduced record? type identical? -namespace unchecked-divide-int ns-name max-key ->PersistentTreeSet ->ChunkBuffer hash-string -prefers set-validator! ident? -meta -dispatch-fn ->IndexedSeqIterator -add-method swap! vals -chunked-next unchecked-subtract ->SeqIter sorted-set-by cloneable? qualified-ident? hash-string* key-test -reset true? array -peek empty remove-method volatile! / bit-or m3-fmix vector >= ->TransientHashSet drop-last ->ArrayIter object? ->ArrayNodeSeq not-empty distinct partition ->Many ->Single bit-flip long-array descendants imul ->Delay merge js-mod integer? mapv infinite? partition-all partition-by ->LazySeq equiv-map ->Volatile object-array derive seq-iter ->Empty special-symbol? ancestors subseq gensym -next ->HashCollisionNode delay? flatten -dissoc doubles halt-when -contains-key? remove-watch ex-info ifn? ->PersistentQueue nat-int? subvec -pop! partial chunked-seq? replicate min-key reduced re-matches array-map unchecked-byte ->ChunkedSeq every-pred keys missing-protocol ->t_cljs$core10492 load-file distinct? pos-int? unchecked-short ->Range ->MapEntry methods odd? ->ArrayChunk -get-method ->Var frequencies reduceable? rsubseq inc type->str get-method uuid? es6-entries-iterator bit-clear filter ->PersistentTreeMapSeq -assoc-n! list + split-with ->VectorNode aset int-rotate-left keyword ->Cons chars str next pr-seq-writer regexp? hash-map underive -reset! -rest nil-iter false? ints some-fn to-array list? array? simple-ident? clone demunge bit-not byte max == parents count -disjoin! ->TransientHashMap sorted-map-by apply add-to-string-hash-cache clj->js ->TransientVector interpose ->BlackNode deref assoc transient -disjoin chunk-cons comparator print-prefix-map sorted-map drop-while realized? compare complement -assoc! string-iter -key->js sequence constantly ->RangedIterator chunked-seq make-array shorts ->RSeq enable-console-print! -flush completing unchecked-negate-int ->PersistentVector hash-unordered-coll repeat unchecked-inc nthnext get-validator number? -conj! ->PersistentArrayMapSeq chunk-next print-str not-any? into-array -hash qualified-symbol? -dissoc! ->Reduced chunk-buffer seqable? symbol? m3-hash-unencoded-chars unchecked-char system-time -invoke coll? get-in fnext -val bytes ->ObjMap -seq])
   (:require 
    [reagent.core :as r]
@@ -11,10 +11,6 @@
 
 (c/defn on-js-reload [])
 
-;; (defonce show-atom (r/atom {}))
-
-;; (c/defn show [v]
-;;   (c/swap! show-atom (c/fn [x] v)))
 
 ;; (def ^{:private true :doc "list of all public funcions in cljs.core"} list-cljs-fn
 ;;   (c/map (c/fn [[k _]] k) 
@@ -165,8 +161,8 @@
         (c/empty? nk) (if (cljs-obj? value)
                         ;; attaching when value is an object
                         (c/swap! (cljs-this-obj a (c/pop k)) c/assoc (c/peek k) value)
-                        ;; wrapping in vector to make it a primitive when value is not an object
-                        (c/swap! (cljs-this-obj a (c/pop k)) c/assoc (c/peek k) (cljs-obj (c/vector value))))
+                        ;; resetting link to [value] to make it primitive when value is not an object
+                        (c/reset! link (c/vector value)))
         
         :else  (if (prim? link)
                  ;; replacing when primitive
@@ -198,7 +194,7 @@
               (recur (c/next r))))
         a))))
  
-;(c/println ex2-cljs-set)
+(c/println ex2-cljs-set)
 
 (def ^{:private true} ex3-cljs-set
   (c/let [a (create-branch-obj [:a] 1)
@@ -212,7 +208,7 @@
           (recur (c/next r)))
         a))))
 
-;(c/println (c/str (cljs-this ex3-cljs-set :a) " and " (cljs-this ex3-cljs-set :b)))
+(c/println (c/str (cljs-this ex3-cljs-set :a) " and " (cljs-this ex3-cljs-set :b)))
 
 
 (c/defn ^{:doc "merge for cljs-obj?"} obj-merge
@@ -270,10 +266,10 @@
   
 ;; (c/println ex4-obj-merge)
 
-(c/defn ^{:doc "merging generators"} gen-merge
-  [& ^{:doc "generators, that is fns without arguments with values in hash-maps"} gens]
-  (c/fn [] (c/apply obj-merge (c/map (c/fn [g] (g))
-                                     gens))))
+;; (c/defn ^{:doc "merging generators"} gen-merge
+;;   [& ^{:doc "generators, that is fns without arguments with values in hash-maps"} gens]
+;;   (c/fn [] (c/apply obj-merge (c/map (c/fn [g] (g))
+;;                                      gens))))
 
 
 
@@ -343,26 +339,24 @@
     (simple-ev* object l)))
 
 
-(c/defn ^{:doc "find info used to set up gen"} show-gen*
-  [^{:doc "fct-object"} object]
+;; (c/defn ^{:doc "find info used to set up gen"} show-gen*
+;;   [^{:doc "fct-object"} object]
   
-  (if (fct?* object)
+;;   (if (fct?* object)
 
-    (:fct/gen (c/meta object))
+;;     (:fct/gen (c/meta object))
 
-    (c/cond
+;;     (c/cond
       
-      (c/vector? object) (c/apply gen-merge (c/map (c/fn [o] (show-gen* o))
-                                                   object))
-      (c/map? object) (c/apply gen-merge (c/map (c/fn [[k v]] (gen-merge (show-gen* k) (show-gen* v)))
-                                                object))
-      :else (c/fn [] (cljs-obj {})))))
+;;       (c/vector? object) (c/apply gen-merge (c/map (c/fn [o] (show-gen* o))
+;;                                                    object))
+;;       (c/map? object) (c/apply gen-merge (c/map (c/fn [[k v]] (gen-merge (show-gen* k) (show-gen* v)))
+;;                                                 object))
+;;       :else (c/fn [] (cljs-obj {})))))
 
 
 (c/defn ^{:doc "constructs an fct object"} construct*
-  [^{:doc "function assigning a cljs-obj? (like l in ev*) a cljs expression"} inter
-   & {:keys [^{:doc "generators for the variables"} gen]
-      :or {gen (c/fn [] (cljs-obj {}))}}]
+  [^{:doc "function assigning a cljs-obj? (like l in ev*) a cljs expression"} inter]
   
   (c/with-meta
     (c/fn [& args] (construct*
@@ -379,53 +373,146 @@
 
 (c/println (ev* ex1-construct* (create-branch-obj [:a] 101)))
 
-(def ^{:private true} ex2-construct*
-  (construct* (c/fn [l] (cljs-this l :a))
-              :gen (c/let [o (cljs-obj {})
-                           do (cljs-set o :a (c/rand-nth (c/list true false)))]
-                     o)))
+
+(c/defn ^{:doc "lifting clojure functions"} lift*
+  [^{:doc "clojure function (not macro)"} clojure-fn]
+  (construct* (c/fn [l] clojure-fn)))
 
 
-(c/defn ^{:doc "keys on which the object depends"} deps*
-  [^{:doc "fct-object"} object]
-  (obj-keys ((show-gen* object))))
+(def ^{:doc "converts expressions with vector and hash-maps to fct"} to-fct
+  (lift* c/identity))
 
-;(c/println (deps* ex2-construct*))
+(def ^{:doc "clojure interop"} call
+  (lift* (c/fn [f & a] (c/apply f a))))
+
+(c/defn ^{:doc "creates an fct function f which evaluates the object on the argument of f"} iso*
+  [^{:doc "fct object"} object]
+  (lift* (c/fn [a] (ev* object a))))
+
+(lift-cljs) ;; lifting all cljs functions 
+
+
+(def this (construct* (c/fn [l] l)))
+
+(def find-in (construct* (c/fn [l]
+                           (c/fn
+                             ([key] (cljs-this l key))
+                             ([state key] (cljs-this state key))))))
+
+(def obj-find-in (construct* (c/fn [l]
+                               (c/fn
+                                 ([key] (cljs-this-obj l key))
+                                 ([state key] (cljs-this-obj state key))))))
+
+(def ex-find-in (c/println (ev* (find-in :a) (create-branch-obj [:a] 11))))
+
+(def ex-obj-find-in (c/println (ev* (obj-find-in :a) (create-branch-obj [:a] 111))))
+
+(def reset (construct* (c/fn [l]
+                         (c/fn [& args]
+                           (c/let [simple-reset (c/fn [state a]
+                                                  (c/loop [m a]
+                                                    (if m
+
+                                                      (c/let [[key value] m
+                                                              do (cljs-set state key value)]
+                                                        (recur (c/next (c/next m))))
+
+                                                      nil)))]
+                             
+                                                  (if (c/keyword? (c/first args))
+
+                                                    (simple-reset l args)
+
+                                                    (simple-reset (c/first args) (c/rest args))))))))
+
+(def ex-reset (c/println (ev* (fcts.core/do (reset :a "1001")
+                                            (find-in :a))
+                              (cljs-obj {}))))
+
+(def ex2-reset (c/println (ev* (c/let [state (cljs-obj {})]
+                                 (fcts.core/do
+                                   (reset state :a "10001" :b "444")
+                                   (find-in state :b)))
+                               (cljs-obj {}))))
+
+(def ex-reset-state-b (cljs-obj {}))
+(def ex-reset-state-a (cljs-obj {}))
+
+(def ex3-reset (c/println (do (ev* (reset :b "b") ex-reset-state-b)
+                              (ev* (reset :a (obj-find-in ex-reset-state-b :b)) ex-reset-state-a)
+                              (ev* (reset :a "a") ex-reset-state-a)
+                              (ev* (find-in :b) ex-reset-state-b))))
+
+
+(c/defn ^{:doc "replaces in the interpretation for the fct object the global state (l) with the state generated by the state generator"} on-state*
+  [^{:doc "fct object"} object
+   ^{:doc "state generator, fct function with state as argument listing all the side effects"} f]
+  
+  (construct* (c/fn [l] (c/let [o (cljs-obj {})
+                                do (ev* (f o) l)]
+
+                          (ev* object o)))))
+
+(def ex-on-state* (c/println (ev* (on-state* (find-in :a)
+                                             (fn [state] (reset state :a 5)))
+                                  (cljs-obj {}))))
+
+(def ex-state (cljs-obj {}))
+
+(def ex2-on-state* (c/println (ev* (on-state* (in (println "first" (find-in :a))
+                                                  (reset :a 0)
+                                                  (println "second "(find-in :a)))
+                                              
+                                              (fn [state]
+                                                (reset :b 55)
+                                                (reset state :a (obj-find-in :b))))
+                                   
+                                   ex-state)))
+
+(c/println (ev* (find-in []) ex-state))
 
 
 (clojure.core/defn ^{:doc "generates a witness"} gen*
   [^{:doc "fct object"} a]
   
-  (c/let [gen ((show-gen* a))]
-    (ev* a gen)))
- 
-;; (def ^{:private true} ex1-gen*
-;;   (c/println (c/map (c/fn [x] (gen* (construct* (c/fn [l] (cljs-this l :a))
-;;                                               :gen (c/let [o (cljs-obj {})
-;;                                                            do (cljs-set o :a (c/rand-nth (c/list true false)))]
-;;                                                      o))))
-;;                   (c/range 10))))
+  (ev* a (cljs-obj {})))
 
-(c/defn ^{:doc "as ev*, but generates missing keys with"} gev*
-  [^{:doc "fct object"} object
-   ^{:doc "as in ev*"} l]
-  (ev* object (obj-merge l ((show-gen* object)))))
 
-(c/defn ^{:doc "variable construction"} var*
-  ([^{:doc "keyword attached to the variable"} key]
-   (var* key nil))
+(c/defn ^{:doc "variable construction"} init*
+    
+  ([key] (init* key nil))
+
   ([^{:doc "keyword attached to the variable"} key
     ^{:doc "fct object"} object]
+
    (c/let [key (if (c/keyword? key) [key] key)]
-     (construct* (c/fn [l] (cljs-this l key))
-                 ;:gen (c/fn [] (c/let [o (cljs-obj {}) do (cljs-set o key (gen* object))] o))
-                 ))))
 
-;; (def ^{:private true} ex1-var* 
-;;   (c/println (gen* (var* [:a :b] (c/rand-int 10)))))
+    (construct* (c/fn [l]
+                  (c/let [v (cljs-this l key)
+                          e (ev* object l)
+                          r (if v
+                              nil
+                              (cljs-set l key e))]
+                    (if v
+                      v
+                      e)))))))
+  
+  
+(def ^{:private true} ex1-init* 
+  (c/println (gen* (c/let [a (init* :a (c/rand-int 10))
+                           b (init* [:b] a)]
+                     (list a b))))) 
 
-;; (def ^{:private true} ex2-var* 
-;;   (c/println (gen* (var* :a {:c (c/rand-int 10)}))))
+;; consistency 
+(def ^{:private true} ex2-init* 
+  (c/println (gen* (c/let [a 
+                           (init* [:a] (c/rand-int 10))
+                           b 
+                           (init* [:b] a)
+                           c 
+                           (init* [:c] a)]
+                     (list a b c)))))
 
 
 (c/defn ^{:doc "variable key construction"} key*
@@ -438,60 +525,31 @@
                  ;:gen (c/fn [] (c/let [o (cljs-obj {}) do (cljs-set o key (gen* object))] o))
                  ))))
 
-;; (def ^{:private true} ex1-key* 
-;;   (c/println (deps* (key* [:a :b] (c/rand-int 10)))))
 
-;; (def ^{:private true} ex2-key* 
-;;   (c/println (gen* (key* [:a :b] (c/rand-int 10)))))
+;;have lifted some macros already 
+(def ^{:private true} ex2-if 
+  (c/println (gen* (fcts.core/if (and true 
+                                      (init* :a (rand-nth '(true false))))
+                     (fcts.core/do (println "Doing something...")
+                                   (init* :b "Yer"))       
+                     "False?"))))     
 
-(c/defn ^{:doc "lifting clojure functions"} lift*
-  [^{:doc "clojure function (not macro)"} clojure-fn]
-  (construct* (c/fn [l] clojure-fn)))
+;; have defined fn
+(def ^{:private true} ex1-fn 
+  (c/println (gen* ((fn [] 
+                      (init* :a (rand-int 100)))))))
 
-;; (def ^{:private true} ex1-lift*
-;;   (c/println (gen* ((lift* c/+) (var* :h (c/rand-int 10)) (var* :a (c/rand))))))
-
-(def ^{:doc "converts expressions with vector and hash-maps to fct"} to-fct
-  (lift* c/identity))
-
-(def ^{:doc "clojure interop"} call
-  (lift* (c/fn [f & a] (c/apply f a))))
-
-(c/defn ^{:doc "creates an fct function f which evaluates the object on the argument of f"} iso*
-  [^{:doc "fct object"} object]
-  (lift* (c/fn [a] (gev* object a))))
-
-(lift-cljs) ;; lifting all cljs functions 
-
-
-;; (def ^{:private true} ex3-var* 
-;;   (c/println  (gen* (list (var* :a (var* :b (rand-int 10)))
-;;                           (var* :c (var* :b (rand-int 10)))
-;;                           (var* :d (var* :b (rand-int 10)))))))
-
-
-;; have lifted some macros already 
-;; (def ^{:private true} ex2-if 
-;;   (c/println (gen* (fcts.core/if (and true (var* :a (rand-nth '(true false))))
-;;                      (fcts.core/do (println "Doing something...")
-;;                                    (var* :b "Yer!"))       
-;;                      "False?"))))   
-
-;; ;; have defined fn
-;; (def ^{:private true} ex1-fn 
-;;   (c/println (gen* ((fn [] (var* :a (rand-int 100)))))))
-
-;; (def ^{:private true} ex2-fn 
-;;   (c/println (gen* ((fn [[_ y]] y)
-;;                     (var* :a ["?" 7])))))
+(def ^{:private true} ex2-fn 
+  (c/println (gen* ((fn [[_ y]] y)
+                    (init* :a ["?" 7])))))
 
 ;; (def ^{:private true} ex3-fn 
 ;;   (c/println (gen* ((fn [{:keys [c]}] c)
-;;                     (var* :a {:c "r"})))))
+;;                     (init* :a {:c "r"})))))
   
 ;; ; have defined let and defn
 ;; (def ^{:private true} ex1-let 
-;;   (c/println (gen* (let [{:keys [c]} (var* :a {:c (rand-int 100)})]
+;;   (c/println (gen* (let [{:keys [c]} (init* :a {:c (rand-int 100)})]
 ;;                      c))))
 
 
@@ -582,7 +640,7 @@
               
               (:fct/? m)
               {:args nil
-               :ret (ev* f {})          ;(gen* f)
+               :ret (ev* f (cljs-obj {}))       ;(gen* f)
                } ; to be changed to gen*                     
               
               (:fct/fcn? m)
@@ -595,10 +653,10 @@
                 {:args []
                  :ret (f)})))))
 
-;; (c/defn gcheck* [f]
-;;   (check* (gen* f)))
+(c/defn gcheck* [f]
+  (check* (gen* f)))
 
-;;(def ex-gcheck (c/println (gcheck* (fn [x] {:gen (fn [] [(var* :a (rand-int 100))])} x))))
+;;(def ex-gcheck (c/println (gcheck* (fn [x] {:gen (fn [] [(init* :a (rand-int 100))])} x))))
 
 (c/defn ^{:doc "runs tests by using check*"} ftest*
 
@@ -638,247 +696,378 @@
 ;;
 
 
-(c/defn test-loop [n f]
-  (c/loop [n n]
-    (if (c/= n 0)
-      "done"
-      (do (f)
-          (recur (c/dec n))))))
+;; (c/defn test-loop [n f]
+;;   (c/loop [n n]
+;;     (if (c/= n 0)
+;;       "done"
+;;       (do (f)
+;;           (recur (c/dec n))))))
 
-(def term (fn []
-            (rand-nth (map (fn [x] (str "term" x))
-                           (range 20)))))
+;; (def term (fn []
+;;             (rand-nth (map (fn [x] (str "term" x))
+;;                            (range 20)))))
 
-(def t (ev* term {}))
+;; (def t (ev* term {}))
 
-(def c-term (c/fn [] 
-              (c/rand-nth (c/map (c/fn [x] (c/str "term" x))
-                                 (c/range 20)))))
+;; (def c-term (c/fn [] 
+;;               (c/rand-nth (c/map (c/fn [x] (c/str "term" x))
+;;                                  (c/range 20)))))
 
-(c-term)
+;; (c-term)
 
-(c/println "Clojure: 50 ms")
-(c/time (test-loop 10000 c-term))
+;; (c/println "Clojure: 50 ms")
+;; (c/time (test-loop 10000 c-term))
 
-(c/println "with gen: 3600 ms")
-(c/time (test-loop 10000 t))
+;; (c/println "with gen: 3600 ms")
+;; (c/time (test-loop 10000 t))
 
-(def element (fn [] (map (fn [x] (term))
-                         (range (rand-int 10)))))
+;; (def element (fn [] (map (fn [x] (term))
+;;                          (range (rand-int 10)))))
 
 
-(def e (ev* element {}))
+;; (def e (ev* element {}))
 
-(def c-element (c/fn [] (c/map (c/fn [x] (c-term))
-                               (c/range (c/rand-int 10)))))
+;; (def c-element (c/fn [] (c/map (c/fn [x] (c-term))
+;;                                (c/range (c/rand-int 10)))))
 
-(c-element)
+;; (c-element)
 
-(c/println "Clojure: 4 ms")
-(c/time (test-loop 10000 c-element))
+;; (c/println "Clojure: 4 ms")
+;; (c/time (test-loop 10000 c-element))
 
-(c/println "with gen: ~480 ms")
-(c/time (test-loop 10000 e))
+;; (c/println "with gen: ~480 ms")
+;; (c/time (test-loop 10000 e))
 
-(def com (c/let [boolean (c/fn [] (c/rand-nth (c/list true false)))
-                 some (lift* (ev* (rand-fn boolean) {}))]
-           (fn [x y] 
-             (if-else (= x y)
-                      true
-                      (some x y)))))
+;; (def com (c/let [boolean (c/fn [] (c/rand-nth (c/list true false)))
+;;                  some (lift* (ev* (rand-fn boolean) {}))]
+;;            (fn [x y] 
+;;              (if-else (= x y)
+;;                       true
+;;                       (some x y)))))
 
-;; (def c-com (c/let [boolean (fn [] (rand-nth (list true false)))
-;;                    some (ev* (rand-fn boolean) {})]
-;;              (c/fn [x y] 
-;;                (if (c/= x y)
-;;                  true
-;;                  (some x y)))))
+;; ;; (def c-com (c/let [boolean (fn [] (rand-nth (list true false)))
+;; ;;                    some (ev* (rand-fn boolean) {})]
+;; ;;              (c/fn [x y] 
+;; ;;                (if (c/= x y)
+;; ;;                  true
+;; ;;                  (some x y)))))
 
-;; (c-com "term1" "term6")
+;; ;; (c-com "term1" "term6")
 
-(def c-com (ev* com {}))
+;; (def c-com (ev* com {}))
 
-(def add-term (fn [e] 
-                (if-else (not (empty? e))
-                         (let [first-term (first e)
-                               type-check  (every? (fn [t] (com first-term t))
-                                                   e)]
-                           (if-else type-check
-                                    first-term
-                                    (list com e)))                                             
-                         "cannot deal with empty list")))
+;; (def add-term (fn [e] 
+;;                 (if-else (not (empty? e))
+;;                          (let [first-term (first e)
+;;                                type-check  (every? (fn [t] (com first-term t))
+;;                                                    e)]
+;;                            (if-else type-check
+;;                                     first-term
+;;                                     (list com e)))                                             
+;;                          "cannot deal with empty list")))
  
-(c/defn tadd [] (ev* (add-term (element))
-                     {}))
+;; (c/defn tadd [] (ev* (add-term (element))
+;;                      {}))
 
-(def c-add-term (c/fn [e] 
-                  (if (c/not (c/empty? e))
-                    (c/let [first-term (c/first e)
-                            type-check  (c/every? (c/fn [t] (c-com first-term t))
-                                                  e)]
-                      (if type-check
-                        first-term
-                        (c/list c-com e)))                                             
-                    "cannot deal with empty list")))
+;; (def c-add-term (c/fn [e] 
+;;                   (if (c/not (c/empty? e))
+;;                     (c/let [first-term (c/first e)
+;;                             type-check  (c/every? (c/fn [t] (c-com first-term t))
+;;                                                   e)]
+;;                       (if type-check
+;;                         first-term
+;;                         (c/list c-com e)))                                             
+;;                     "cannot deal with empty list")))
 
-(def find-same (fn [t e] 
-                 {:same-type (filter (fn [a] (com t a)) e)
-                  :remainder (filter (fn [a] (not (com t a))) e)}))
+;; (def find-same (fn [t e] 
+;;                  {:same-type (filter (fn [a] (com t a)) e)
+;;                   :remainder (filter (fn [a] (not (com t a))) e)}))
 
-(c/defn fs [] (ev* (find-same (term) (element)) {}))
+;; (c/defn fs [] (ev* (find-same (term) (element)) {}))
 
- ;; (def s (fn [e] {:gen (fn [] (vector (element)))}
- ;;         (add-term (get (find-same (first e) e) :same-type))))
+;;  ;; (def s (fn [e] {:gen (fn [] (vector (element)))}
+;;  ;;         (add-term (get (find-same (first e) e) :same-type))))
 
-(def c-find-same (c/fn find-same [t e] 
-                   (c/hash-map :same-type (c/filter (c/fn [a] (c-com t a)) e)
-                               :remainder (c/filter (c/fn [a] (c/not (c-com t a))) e))))
-
-
-(c/defn c-fs [] (c-find-same (c-term) (c-element)))
+;; (def c-find-same (c/fn find-same [t e] 
+;;                    (c/hash-map :same-type (c/filter (c/fn [a] (c-com t a)) e)
+;;                                :remainder (c/filter (c/fn [a] (c/not (c-com t a))) e))))
 
 
-(c/println "Clojure: 50 ms")
-(c/time (test-loop 10000 c-fs))
-
-(c/println "with gen: 4900 ms")
-(c/time (test-loop 10000 fs))
+;; (c/defn c-fs [] (c-find-same (c-term) (c-element)))
 
 
-(def simplify (fn [e] 
-                (loop [x e
-                       r []]
-                  {:test (empty? x)
-                   :rec (let [[t] x
-                              {:keys [remainder same-type]} (find-same t x)
-                              sum  (add-term same-type)
-                              new-y (conj r sum)]
-                          (rec remainder new-y))
-                   :ret r})))
+;; (c/println "Clojure: 50 ms")
+;; (c/time (test-loop 10000 c-fs))
+
+;; (c/println "with gen: 4900 ms")
+;; (c/time (test-loop 10000 fs))
 
 
-(c/defn tsimp [] (ev* (simplify (element)) {}))
+;; (def simplify (fn [e] 
+;;                 (loop [x e
+;;                        r []]
+;;                   {:test (empty? x)
+;;                    :rec (let [[t] x
+;;                               {:keys [remainder same-type]} (find-same t x)
+;;                               sum  (add-term same-type)
+;;                               new-y (conj r sum)]
+;;                           (rec remainder new-y))
+;;                    :ret r})))
 
 
-(def c-simplify (c/fn [e] 
-                  (c/loop [x e
-                           r []]
-                    (if (c/empty? x)
-                      r
-                      (c/let [[t] x
-                              {:keys [remainder same-type]} (c-find-same t x)
-                              sum  (c-add-term same-type)
-                              new-y (c/conj r sum)]
-                        (recur remainder new-y))))))
-
-(c-simplify (c-element))
-
-(c/defn c-tsimp [] (c-simplify (c-element)))
-
-;; we could also use (s/coll-of element) 
-(def add (fn [& elements] 
-           (simplify (apply concat elements))))
+;; (c/defn tsimp [] (ev* (simplify (element)) {}))
 
 
-(def c-add (c/fn [& elements] 
-             (c-simplify (c/apply c/concat elements))))
+;; (def c-simplify (c/fn [e] 
+;;                   (c/loop [x e
+;;                            r []]
+;;                     (if (c/empty? x)
+;;                       r
+;;                       (c/let [[t] x
+;;                               {:keys [remainder same-type]} (c-find-same t x)
+;;                               sum  (c-add-term same-type)
+;;                               new-y (c/conj r sum)]
+;;                         (recur remainder new-y))))))
 
-(c-add (c-element) (c-element))
+;; (c-simplify (c-element))
 
-;; ;; multiplication of terms
-(def mult-term (lift* ((ev* rand-fn {}) (ev* element {}))))
+;; (c/defn c-tsimp [] (c-simplify (c-element)))
+
+;; ;; we could also use (s/coll-of element) 
+;; (def add (fn [& elements] 
+;;            (simplify (apply concat elements))))
 
 
+;; (def c-add (c/fn [& elements] 
+;;              (c-simplify (c/apply c/concat elements))))
 
-(def c-mult-term (ev* mult-term {}))
+;; (c-add (c-element) (c-element))
+
+;; ;; ;; multiplication of terms
+;; (def mult-term (lift* ((ev* rand-fn {}) (ev* element {}))))
 
 
 
-(def mult (fn [& elements] 
+;; (def c-mult-term (ev* mult-term {}))
 
-            (c/let [simple-mult1 (fn [t e] 
-                                 (loop [e e r []]
-                                   {:test (empty? e)
-                                    :rec (let [[s] e]
-                                           (rec (rest e) (concat (mult-term t s) r)))
-                                    :ret (simplify r)}))
-                    simple-mult  (fn [e1 e2] 
-                                   (loop [e1 e1 r []]
-                                     {:test (empty? e1)
-                                      :rec (let [[t] e1]
-                                             (rec (rest e1)
-                                                  (concat (simple-mult1 t e2)
-                                                          r)))
-                                      :ret (simplify r)}))]
+
+
+;; (def mult (fn [& elements] 
+
+;;             (c/let [simple-mult1 (fn [t e] 
+;;                                  (loop [e e r []]
+;;                                    {:test (empty? e)
+;;                                     :rec (let [[s] e]
+;;                                            (rec (rest e) (concat (mult-term t s) r)))
+;;                                     :ret (simplify r)}))
+;;                     simple-mult  (fn [e1 e2] 
+;;                                    (loop [e1 e1 r []]
+;;                                      {:test (empty? e1)
+;;                                       :rec (let [[t] e1]
+;;                                              (rec (rest e1)
+;;                                                   (concat (simple-mult1 t e2)
+;;                                                           r)))
+;;                                       :ret (simplify r)}))]
               
-              (if-else (empty? elements)
-                       []
-                       (loop [elements (rest elements)
-                              r (first elements)]
-                         {:test (empty? elements)
-                          :rec (let [[e] elements]
-                                 (rec (rest elements) (simple-mult r e)))
-                          :ret (simplify r)})))))
+;;               (if-else (empty? elements)
+;;                        []
+;;                        (loop [elements (rest elements)
+;;                               r (first elements)]
+;;                          {:test (empty? elements)
+;;                           :rec (let [[e] elements]
+;;                                  (rec (rest elements) (simple-mult r e)))
+;;                           :ret (simplify r)})))))
 
 
-(c/defn mt [] (ev* (mult (element) (element) (element))
-                   {}))
+;; (c/defn mt [] (ev* (mult (element) (element) (element))
+;;                    {}))
 
 
 
-(def c-mult (c/fn [& elements] 
+;; (def c-mult (c/fn [& elements] 
 
-              (c/let [simple-mult1 (c/fn [t e] 
-                                     (c/loop [e e r []]
-                                       (if  (c/empty? e)
-                                         (c-simplify r)
-                                         (c/let [[s] e]
-                                           (recur (c/rest e) (c/concat (c-mult-term t s) r))))))
-                  simple-mult  (c/fn [e1 e2] 
-                                 (c/loop [e1 e1 r []]
-                                   (if (c/empty? e1)
-                                     (c-simplify r)
-                                     (c/let [[t] e1]
-                                       (recur (c/rest e1)
-                                              (c/concat (simple-mult1 t e2)
-                                                        r))))))]
+;;               (c/let [simple-mult1 (c/fn [t e] 
+;;                                      (c/loop [e e r []]
+;;                                        (if  (c/empty? e)
+;;                                          (c-simplify r)
+;;                                          (c/let [[s] e]
+;;                                            (recur (c/rest e) (c/concat (c-mult-term t s) r))))))
+;;                   simple-mult  (c/fn [e1 e2] 
+;;                                  (c/loop [e1 e1 r []]
+;;                                    (if (c/empty? e1)
+;;                                      (c-simplify r)
+;;                                      (c/let [[t] e1]
+;;                                        (recur (c/rest e1)
+;;                                               (c/concat (simple-mult1 t e2)
+;;                                                         r))))))]
               
-                (if (c/empty? elements)
-                  []
-                  (c/loop [elements (c/rest elements)
-                           r (c/first elements)]
-                    (if (c/empty? elements)
-                      (c-simplify r)
-                      (c/let [[e] elements]
-                        (recur (c/rest elements) (simple-mult r e)))))))))
+;;                 (if (c/empty? elements)
+;;                   []
+;;                   (c/loop [elements (c/rest elements)
+;;                            r (c/first elements)]
+;;                     (if (c/empty? elements)
+;;                       (c-simplify r)
+;;                       (c/let [[e] elements]
+;;                         (recur (c/rest elements) (simple-mult r e)))))))))
 
 
-(c/defn c-mt [] (c-mult (c-element) (c-element) (c-element)))
+;; (c/defn c-mt [] (c-mult (c-element) (c-element) (c-element)))
 
-(c/println  "Clojure:")
-(c/time (test-loop 100 c-mt))
+;; (c/println  "Clojure:")
+;; (c/time (test-loop 100 c-mt))
 
-(c/println  "Best: 1400 ms")
-(c/time (test-loop 100 mt))
+;; (c/println  "Best: 1400 ms")
+;; (c/time (test-loop 100 mt))
 
-
-
+      
 ;; test
-(defonce show-atom (cljs-obj {}))
 
-(cljs-set show-atom :a "Here!")
+(defonce app-state (cljs-obj {}))
 
-;(cljs-set show-atom [:a] 5)
+(c/defn another-timing-wrapper [f]
+  (c/let [now #(.now js/Date)
+          start #(c/swap! app-state c/assoc :start-time (now))
+          stop #(c/swap! app-state c/assoc :render-time (c/- (now) (:start-time @app-state)))
+          timed-f (c/with-meta f
+                    {:component-will-mount start
+                     :component-will-update start
+                     :component-did-mount stop
+                     :component-did-update stop})]
+    (c/fn []
+      [:div 
+       [:p [:em "render time: " (:render-time @app-state) "ms"]]
+       [timed-f]])))
 
-(def g (var* :a))
 
-;(c/println (ev* [:p g] show-atom))
+(c/defn timing-wrapper [f]
+  (c/let [start-time (r/atom nil)
+          render-time (r/atom nil)
+          now #(.now js/Date)
+          start #(c/reset! start-time (now))
+          stop #(c/reset! render-time (c/- (now) @start-time))
+          timed-f (c/with-meta f
+                    {:component-will-mount start
+                     :component-will-update start
+                     :component-did-mount stop
+                     :component-did-update stop})]
+    (c/fn []
+      [:div 
+       [:p [:em "render time: " @render-time "ms"]]
+       [timed-f]])))
 
-(c/defn show-component []
-  (ev* [:p g] show-atom))
+(def render-time (init* :render-time "??"))
 
-(c/defn ^:export run []
-  (r/render [show-component]
+(defn fct-timing-wrapper [f]
+  (c/let [a (init* :render-time "???")]
+      (let [now #(.now js/Date)
+            start (fn [] (reset :start-time (now)))
+            stop  (fn [] (reset :render-time (- (now) (find-in :start-time))))
+            timed-f (with-meta f
+                      {:component-will-mount start
+                       :component-will-update start
+                       :component-did-mount stop
+                       :component-did-update stop})]
+        (fn []
+          [:div 
+           [:p [:em "render time: " a "ms"]]
+           [timed-f]]))))
+
+ 
+(defn state-ful-with-atom []
+  (let [click-count (init* :click-count 0)
+        result (init* :result "?")]
+    [:div {:on-click (fn [] (in (reset :click-count (inc click-count))
+                                (reset :result (c/apply c/+ (c/range 100)))))}
+     "I have been clicked " click-count " and I have computed " result]))
+
+
+;; (defn to-rgb [{:keys [red green blue]}] {:gen (fn [] [{:red (rand-int 100)
+;;                                                        :green (rand-int 100)
+;;                                                        :blue (rand-int 100)}])}
+;;   (c/let [hex (lift* #(.toString % 16))]
+;;     (str "#" (hex red) (hex green) (hex blue))))
+
+;; (c/println (gcheck* to-rgb))
+
+;; (defn tweak-color [{:keys [red green blue]}] {:gen (fn [] [{:red (rand-int 100)
+;;                                                             :green (rand-int 100)
+;;                                                             :blue (rand-int 100)}])}
+;;   (c/let [rnd #(-> (js/Math.random) (c/* 256))
+;;           tweak (lift* #(-> % (c/+ (rnd)) (c// 2) js/Math.floor))]
+;;     {:red (tweak red) :green (tweak green) :blue (tweak blue)}))
+
+;; (c/println (gcheck* tweak-color))
+
+(c/defn to-rgb [{:keys [red green blue]}]
+  (c/let [hex #(.toString % 16)]
+    (c/str "#" (hex red) (hex green) (hex blue))))
+
+(c/defn tweak-color [{:keys [red green blue]}]
+  (c/let [rnd #(-> (js/Math.random) (c/* 256))
+          tweak #(-> % (c/+ (rnd)) (c// 2) js/Math.floor)]
+    {:red (tweak red) :green (tweak green) :blue (tweak blue)}))
+
+(def base-color (init* :base-color {:red 130 :green 160 :blue 120}))
+
+(def random-colors  (init* :random-colors (repeatedly (fn [] (apply #(-> % tweak-color to-rgb)
+                                                                   [base-color])))))
+(defn color-choose [color-part]
+  [:div.color-slider
+   (name color-part) " " 
+   [:input {:type "range" :min 0 :max 255
+            :value (get base-color color-part)
+            :on-change (fn [e]
+                         (let [new-bc (assoc base-color
+                                             color-part ((lift* #(-> % .-target .-value c/int)) e))]
+                           (in (reset :base-color new-bc)
+                               (reset :random-colors
+                                      (repeatedly (fn [] (apply #(-> % tweak-color to-rgb)
+                                                                [new-bc])))))))}]
+
+   (get base-color color-part)])
+
+(def ncolors (init* :ncolors 20))
+
+(defn ncolors-choose []
+  [:div.color-slider
+   "number of color divs " 
+   [:input {:type "range" :min 0 :max 500
+            :value ncolors
+            :on-change (fn [e] (reset :ncolors ((lift* #(-> % .-target .-value c/int)) e)))}]
+   ncolors])
+
+(defn color-plate [color]
+  [:div.color-plate
+   {:style {:background-color color}}
+   "??"])
+
+(defn palette []
+  (let [color base-color
+        n ncolors]
+    [:div
+     [:p "base color: "]
+     [color-plate (apply to-rgb [color])]
+     [:div.color-samples
+      [:p n " random matching colors:"]
+      (apply (c/fn [color-plate n random-colors]
+               (c/map-indexed (c/fn [k v]
+                                (c/with-meta [color-plate v]
+                                  {:key k}))
+                              (c/doall (c/take n random-colors))))
+             [color-plate n random-colors])]]))
+
+(defn color-demo []
+  (fn []
+    [:div
+     [:h2 "Matching colors"]
+     [color-choose :red]
+     [color-choose :green]
+     [color-choose :blue]
+     [ncolors-choose]
+     [timing-wrapper palette]]))
+
+(c/defn ^:export run []  
+  (r/render (gen* [color-demo])
             (js/document.getElementById "app")))
 
 (run)
