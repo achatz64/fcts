@@ -4,7 +4,7 @@
   (:require 
    [reagent.core :as r]
    [cljs.core :as c]))
- 
+  
 ;; preliminaries
 
 (c/enable-console-print!)
@@ -28,7 +28,7 @@
 (c/defn ^{:doc "wrappint into an object"} cljs-obj [a]
   (if (cljs-obj? a)
     a
-    (c/with-meta (r/atom a) {:fct/obj? true})))
+    (r/atom a :meta {:fct/obj? true})))
 
 
 (c/defn ^{:doc "wrapping into an object"} create-branch-obj [key value]
@@ -186,6 +186,14 @@
     
     nil))
 
+(c/defn ^{:doc "set key in object to a value"} cljs-set-sync [a & args]
+
+  (c/loop [args args]
+    (if args
+      (do (cljs-set a (c/first args) (c/second args))
+          (recur (c/next (c/next args))))
+      nil)))
+
 ;; (def ^{:private true} ex1-cljs-set
 ;;   (c/let [a (create-branch-obj [:a :d] 10)
 ;;           key [:a :d]]
@@ -222,6 +230,32 @@
 
 (c/println (c/str (cljs-this ex3-cljs-set :a) " and " (cljs-this ex3-cljs-set :b)))
 
+(def ^{:private true} ex4-cljs-set
+  (c/println (c/let [a (create-branch-obj [:a] 1)
+                     do (cljs-set a :b 0)
+                     f (c/fn [& args]
+                         (cljs-set a (c/first args) (c/second args))
+                         (cljs-set a (c/nth args 2) (c/nth args 3)))]
+               (do (f :a (cljs-this a :b) :b (cljs-this a :a))
+                   a))))
+
+(def ^{:private true} ex5-cljs-set
+  (c/println (c/let [a (create-branch-obj [:a] 1)
+                     do (cljs-set a :b 0)
+                     f (c/fn [a] (c/fn [& args]
+                                   (c/loop [args args]
+                                     (if args
+                                       (do (cljs-set a (c/first args) (c/second args))
+                                           (recur (c/next (c/next args))))
+                                       nil))))]
+               (do ((f a) :a (cljs-this a :b) :b (cljs-this a :a))
+                   a))))
+
+(def ^{:private true} ex-cljs-set-sync
+  (c/println (c/let [a (create-branch-obj [:a] 1)
+                     do (cljs-set a :b 0)]
+               (do (cljs-set-sync a :a (cljs-this a :b) :b (cljs-this a :a))
+                   a))))
 
 (c/defn ^{:doc "merge for cljs-obj?"} obj-merge
   [& ^{:doc "cljs-obj?"} args]
@@ -385,6 +419,19 @@
 
 (c/println (ev* ex1-construct* (create-branch-obj [:a] 101)))
 
+(c/defn ^{:doc "constructs an fct object"} construct-doall*
+  [^{:doc "function assigning a cljs-obj? (like l in ev*) a cljs expression"} inter]
+  
+  (c/with-meta
+    (c/fn [& args] (construct*
+                    (c/fn [l]
+                      (c/apply (inter l) (c/doall (c/map #(ev* % l) args))))
+                    ))  ;;:gen (c/apply gen-merge (c/conj (c/map show-gen* args gen))
+    {:fct/? true
+     :fct/inter inter
+     ;:fct/gen gen
+     }))
+
 
 (c/defn ^{:doc "lifting clojure functions"} lift*
   [^{:doc "clojure function (not macro)"} clojure-fn]
@@ -420,27 +467,17 @@
 
 (def ex-obj-find-in (c/println (ev* (obj-find-in :a) (create-branch-obj [:a] 111))))
 
-(def reset (construct* (c/fn [l]
-                         (c/fn [& args]
-                           (c/let [simple-reset (c/fn [state a]
-                                                  (c/loop [m a]
-                                                    (if m
+(def reset (construct-doall* (c/fn [l]
+                               (c/fn [f & args]
+                                 (c/cond
+                                   
+                                   (c/keyword? f) (c/apply cljs-set-sync (c/cons l (c/cons f args)))
+                                   
+                                   (c/vector? f) (c/apply cljs-set-sync (c/cons l (c/cons f args)))
+                                   
+                                   :else (c/apply cljs-set-sync (c/cons f args)))))))
 
-                                                      (c/let [[key value] m
-                                                              do (cljs-set state key value)]
-                                                        (recur (c/next (c/next m))))
 
-                                                      nil)))]
-                             
-                             
-                             (c/let [[f] args]   
-                               (c/cond
-
-                                 (c/keyword? f) (simple-reset l args)
-                                 
-                                 (c/vector? f) (simple-reset l args)
-                                 
-                                 :else (simple-reset (c/first args) (c/rest args)))))))))
 
 (def ex-reset (c/println (ev* (fcts.core/do (reset :a "1001")
                                             (find-in :a))
@@ -466,6 +503,14 @@
                                          (reset [:A] "AA")
                                          (find-in c []))))
                                (cljs-obj {}))))
+
+(def ^{:private true} ex5-reset
+  (c/println (ev*  (in (reset :a 0)
+                       (reset :b 1)
+                       (reset :b (find-in :a) :a (find-in :b))
+                       {:a (find-in :a) :b (find-in :b)})
+                   (cljs-obj {}))))
+
 
 (c/defn ^{:doc "replaces in the interpretation for the fct object the global state (l) with the state generated by the state generator"} on-state*
   ([^{:doc "fct object"} object
@@ -529,9 +574,7 @@
                           r (if v
                               nil
                               (cljs-set l key e))]
-                    (if v
-                      v
-                      e)))))))
+                          (cljs-this l key)))))))
   
   
 (def ^{:private true} ex1-init* 
@@ -1007,13 +1050,75 @@
            [:p [:em "render time: " a "ms"]]
            [timed-f]]))))
 
- 
-(defn state-ful-with-atom []
-  (let [click-count (init* :click-count 0)
-        result (init* :result "?")]
-    [:div {:on-click (fn [] (in (reset :click-count (inc click-count))
-                                (reset :result (c/apply c/+ (c/range 100)))))}
-     "I have been clicked " click-count " and I have computed " result]))
+(def click-count (init* :click-count 0))
+
+(def state-ful-with-atom (fn []
+                           [:button {:on-click (fn [] (in (println (str click-count))
+                                                          (reset :click-count (inc click-count))))}
+                            [:p (call (c/fn [click-count] (c/str "I have been clicked " click-count))
+                                      click-count)]]))
+
+(def count-atom (r/atom 0))
+(def crazy-state (r/atom {}))
+
+;;(defonce click-count (r/atom 0))
+
+;; (c/defn state-ful-with-atom []
+;;   [:div {:on-click #(c/swap! click-count c/inc)}
+;;    "I have been clicked " @click-count " times."])
+
+
+(c/defn iter-component [state]
+  [:button {:on-click (c/fn [] (do (c/println "Here!")
+                                   (c/swap! crazy-state
+                                            (c/fn [a] {:component iter-component :count (c/inc (:count a))}))))}
+   "???????????????"
+   [:p (c/str "We are at: " state)]
+   [:div 
+    "Click here!"]])
+
+(c/reset! crazy-state {:component iter-component
+                       :count 0})
+
+(c/println crazy-state)
+
+(c/defn together []
+  [(:component (c/deref crazy-state))
+   (:count (c/deref crazy-state))])
+
+
+(def component (init* :component))
+
+(defn f-iter-component [state]
+  [:button {:on-click (fn [] (in (println (= component f-iter-component))
+                                 (println (list (meta component) (meta f-iter-component)))
+                                 (reset :click-count (inc click-count)
+                                        :component f-iter-component)))}
+   "???????????????"
+   [:p (str "We are at: " state)]
+   [:div 
+    "Click here!"]])
+
+(defn f-together []
+  (in (if-else (= nil component)
+               (in (reset :component f-iter-component)
+                   (println (meta component))))
+      [:div [component
+             click-count]
+       [:p (str (meta f-iter-component))]
+       [:p (str (meta (lift* (c/with-meta  (c/fn [] "??") {:doc "d"}))))]]))
+
+(def re (c/fn ^{:doc "this"} g [] g))
+
+(c/println (c/meta (re)))
+
+(c/defn ^:export run []  
+  (r/render (gen* [timing-wrapper f-together])
+            (js/document.getElementById "app")))
+
+(run)
+
+
 
 
 ;; (defn to-rgb [{:keys [red green blue]}] {:gen (fn [] [{:red (rand-int 100)
@@ -1101,10 +1206,12 @@
      [ncolors-choose]
      [timing-wrapper palette]]))
 
-(c/defn ^:export run []  
-  (r/render (gen* [color-demo])
-            (js/document.getElementById "app")))
 
-(run)
+;; (c/defn ^:export run []  
+;;   (r/render (gen* [color-demo])
+;;             (js/document.getElementById "app")))
+
+;; (run)
+
 
 

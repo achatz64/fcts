@@ -1,7 +1,7 @@
 (ns fcts.core
   (:refer-clojure :exclude [and cond or lazy-seq])
   (:require [clojure.core :as c])) 
-
+ 
 (defmacro my [a]
   `(cljs.core/println ~a))
 
@@ -39,11 +39,11 @@
 
 
 (c/defmacro cond [& args]
-  `(fcts.core/lift-macro c/cond ~@args))
+  `(fcts.core/lift-macro cljs.core/cond ~@args))
 
 
 (c/defmacro lazy-seq [& args]
-  `(fcts.core/lift-macro c/lazy-seq ~@args))
+  `(fcts.core/lift-macro cljs.core/lazy-seq ~@args))
 
 (c/defmacro and [& args] `(fcts.core/lift-macro cljs.core/and ~@args))
 
