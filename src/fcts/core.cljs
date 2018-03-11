@@ -1,5 +1,5 @@
 (ns fcts.core
-  (:require-macros [fcts.core :refer [lift-cljs and or lazy-seq cond if-else fn let loop in defn]])
+  (:require-macros [fcts.core :refer [lift-cljs and or lazy-seq cond if-else if fn let loop in defn]])
   (:refer-clojure :exclude [->PersistentHashSet js->clj sort-by chunk-first print-meta? m3-hash-int pr-str* eduction tree-seq unchecked-remainder-int uuid seq reduce find-ns contains? every? ->ES6IteratorSeq keep-indexed ->PersistentQueueSeq subs set take-last bit-set qualified-keyword? ->Eduction ->ES6SetEntriesIterator -with-meta ->PersistentArrayMapIterator butlast unchecked-subtract-int -iterator take-nth first native-satisfies? seq? -sorted-seq-from println-str inst-ms iterate -empty newline -chunked-rest write-all fn? -prefer-method -assoc doall keyword-identical? prefers -js->clj dedupe ->ES6Iterator dissoc atom bit-shift-right -first peek aget -write iter mk-bound-fn last -default-dispatch-val pr namespace obj-map -conj = take vector? boolean bit-shift-left random-uuid any? rand-int aclone vreset! chunk dec ->TransformerIterator map juxt ->PersistentQueueIter < test rest ex-data -drop-first isa? boolean? -clone munge ->NeverEquiv re-seq char? make-hierarchy -reduce -count swap-vals! keep char mapcat unchecked-long some? unchecked-negate symbol-identical? reverse inst? range bit-count sort ->MetaFn unchecked-inc-int -compare map-indexed array-list rand-nth comp array-chunk dispatch-fn bit-shift-right-zero-fill -as-transient dorun pr-sequential-writer simple-symbol? disj ->UUID ->MultiIterator cons ->HashSetIter floats pos? fnil merge-with nthrest -find sequential? m3-mix-H1 ->TransientArrayMap prim-seq shuffle hash-keyword find alength bit-xor ->IndexedSeq unsigned-bit-shift-right neg? -remove-method ->StringIter js-invoke ->List m3-mix-K1 unchecked-float undefined? reduced? apply-to disj! -lookup float? booleans ->ArrayList int-array set? iterable? cat ->ES6EntriesIterator -pr-writer flush set-from-indexed-seq take-while vary-meta is_proto_ <= conj! -pop repeatedly zipmap reset-vals! -remove-watch remove ->BitmapIndexedNode * re-pattern min -persistent! -nth pop! chunk-append prn-str reversible? -realized? -add-watch -deref-with-timeout conj -sorted-seq transduce -swap! js-delete truth_ array-index-of ->MultiFn key->js compare-and-set! array-seq interleave print-map map? get identity into long double volatile? -key nfirst meta -kv-reduce bit-and-not var? -comparator unchecked-add-int hash-ordered-coll reset-meta! ->KeySeq cycle -deref empty? short -clj->js -chunked-first filterv ->TaggedLiteral hash quot ns-interns* unchecked-double ->ChunkedCons ranged-iterator key longs not= set-print-err-fn! string? uri? es6-iterator pr-str-with-opts ->RecordIter ->Symbol unchecked-multiply-int chunk-rest remove-all-methods trampoline double? vec -notify-watches int ->ValSeq rand second find-ns-obj hash-combine > -name replace int? ->Subvec associative? unchecked-int js-keys inst-ms* keyword? array-iter force group-by -rseq prn default-dispatch-val ->Atom unchecked-multiply even? es6-iterator-seq unchecked-dec persistent-array-map-seq tagged-literal? double-array create-ns ->EmptyList spread rseq ex-cause ex-message ->NodeIterator string-print float pr-str es6-set-entries-iterator concat -methods symbol to-array-2d ExceptionInfo mod pop -entry-key dissoc! reductions indexed? - -equiv ->RangeIterator ->ArrayNode assoc! hash-set reduce-kv reset! name ->RedNode ffirst ->ArrayNodeIterator sorted-set ->PersistentTreeMap counted? tagged-literal println assoc-in bit-test ->Namespace ->PersistentHashMap memoize alter-meta! ->StringBufferWriter zero? simple-keyword? -assoc-n unchecked-dec-int persistent! set-print-fn! nnext add-watch not-every? rem ifind? ->t_cljs$core8988 ->HashMapIter ->NodeSeq some ->Box neg-int? drop js-obj nth sorted? nil? split-at prn-str-with-opts random-sample select-keys bit-and bounded-count update find-macros-ns list* ->Keyword update-in prefer-method ensure-reduced ->PersistentArrayMap instance? mix-collection-hash re-find run! val unchecked-add transformer-iterator not -vreset! with-meta unreduced record? type identical? -namespace unchecked-divide-int ns-name max-key ->PersistentTreeSet ->ChunkBuffer hash-string -prefers set-validator! ident? -meta -dispatch-fn ->IndexedSeqIterator -add-method swap! vals -chunked-next unchecked-subtract ->SeqIter sorted-set-by cloneable? qualified-ident? hash-string* key-test -reset true? array -peek empty remove-method volatile! / bit-or m3-fmix vector >= ->TransientHashSet drop-last ->ArrayIter object? ->ArrayNodeSeq not-empty distinct partition ->Many ->Single bit-flip long-array descendants imul ->Delay merge js-mod integer? mapv infinite? partition-all partition-by ->LazySeq equiv-map ->Volatile object-array derive seq-iter ->Empty special-symbol? ancestors subseq gensym -next ->HashCollisionNode delay? flatten -dissoc doubles halt-when -contains-key? remove-watch ex-info ifn? ->PersistentQueue nat-int? subvec -pop! partial chunked-seq? replicate min-key reduced re-matches array-map unchecked-byte ->ChunkedSeq every-pred keys missing-protocol ->t_cljs$core10492 load-file distinct? pos-int? unchecked-short ->Range ->MapEntry methods odd? ->ArrayChunk -get-method ->Var frequencies reduceable? rsubseq inc type->str get-method uuid? es6-entries-iterator bit-clear filter ->PersistentTreeMapSeq -assoc-n! list + split-with ->VectorNode aset int-rotate-left keyword ->Cons chars str next pr-seq-writer regexp? hash-map underive -reset! -rest nil-iter false? ints some-fn to-array list? array? simple-ident? clone demunge bit-not byte max == parents count -disjoin! ->TransientHashMap sorted-map-by apply add-to-string-hash-cache clj->js ->TransientVector interpose ->BlackNode deref assoc transient -disjoin chunk-cons comparator print-prefix-map sorted-map drop-while realized? compare complement -assoc! string-iter -key->js sequence constantly ->RangedIterator chunked-seq make-array shorts ->RSeq enable-console-print! -flush completing unchecked-negate-int ->PersistentVector hash-unordered-coll repeat unchecked-inc nthnext get-validator number? -conj! ->PersistentArrayMapSeq chunk-next print-str not-any? into-array -hash qualified-symbol? -dissoc! ->Reduced chunk-buffer seqable? symbol? m3-hash-unencoded-chars unchecked-char system-time -invoke coll? get-in fnext -val bytes ->ObjMap -seq])
   (:require 
    [reagent.core :as r]
@@ -108,11 +108,12 @@
       (c/get (nil-deref a) key))))
 
 (def ^{:private true} ex-cljs-this-obj
-  (c/let [a (create-branch-obj [:x :z] 4)
-          key [:x :z]]
-    (cljs-this-obj a key)))
+  (c/println (c/let [a (create-branch-obj [:x :z] 4)
+                     key [:x :z]]
+               (cljs-this-obj a key))))
 
-;(c/println (c/str (nil-deref ex-cljs-this-obj)))
+
+
 
 (c/defn ^{:doc "returns a vector with first entry the keys with non-nil entries and second entry the keys with nil entries"}
   cljs-nil-in-obj [a key]
@@ -251,11 +252,26 @@
                (do ((f a) :a (cljs-this a :b) :b (cljs-this a :a))
                    a))))
 
+(def ^{:private true} ex6-cljs-this-set
+  (c/println (c/let [a (create-branch-obj [:x :z] 4)
+                     key [:x :z]
+                     b (cljs-this a [])]
+               (do (cljs-set-sync a :local b)
+                   a))))
+
+(def ^{:private true} ex7-cljs-this-set
+  (c/println "ex7" (c/let [a (create-branch-obj [:x] 4)
+                           do (cljs-set a :y 5)]
+                     (do (cljs-set a [:local :b] (cljs-this-obj a [:x]))
+                         a))))
+
 (def ^{:private true} ex-cljs-set-sync
   (c/println (c/let [a (create-branch-obj [:a] 1)
                      do (cljs-set a :b 0)]
                (do (cljs-set-sync a :a (cljs-this a :b) :b (cljs-this a :a))
                    a))))
+
+
 
 (c/defn ^{:doc "merge for cljs-obj?"} obj-merge
   [& ^{:doc "cljs-obj?"} args]
@@ -512,45 +528,53 @@
                    (cljs-obj {}))))
 
 
-(c/defn ^{:doc "replaces in the interpretation for the fct object the global state (l) with the state generated by the state generator"} on-state*
-  ([^{:doc "fct object"} object
-    ^{:doc "state generator, fct function with state as argument listing all the side effects"} f]
+;; (c/defn ^{:doc "replaces in the interpretation for the fct object the global state (l) with the state generated by the state generator"} on-state*
+;;   ([^{:doc "fct object"} object
+;;     ^{:doc "state generator, fct function with state as argument listing all the side effects"} f]
    
-   (construct* (c/fn [l] (c/let [o (cljs-obj {})
-                                 do (ev* (f o) l)]
+;;    (construct* (c/fn [l] (c/let [o (cljs-obj {})
+;;                                  do (ev* (f o) l)]
+                           
+;;                            (ev* object o)))))
 
-                           (ev* object o)))))
-
-  ([^{:doc "fct object"} object
-    ^{:doc "state generator, fct function with state as argument listing all the side effects"} f
-    ^{:doc "key on which the local state passed to object should be synchronised with"} key]
+;;   ([^{:doc "fct object"} object
+;;     ^{:doc "state generator, fct function with state as argument listing all the side effects"} f
+;;     ^{:doc "key on which the local state passed to object should be synchronised with"} key]
    
-   (construct* (c/fn [l] (c/let [o (cljs-set l key (cljs-obj {}))   ;deleting whatever is at key 
-                                 do (ev* (f (obj-find-in key)) l)]
+;;    (construct* (c/fn [l] (c/let [o (cljs-set l key (cljs-obj {}))   ;deleting whatever is at key 
+;;                                  do (ev* (f (obj-find-in key)) l)]
 
-                           (ev* object (cljs-this-obj l key)))))))
+;;                            (ev* object (cljs-this-obj l key)))))))
 
-(def ex-on-state* (c/println (ev* (on-state* (find-in :a)
-                                             (fn [state] (reset state :a 5)))
-                                  (cljs-obj {}))))
 
-(def ex-state (cljs-obj {}))
 
-(def ex2-on-state* (c/println (ev* (on-state* (in (println "first" (find-in :a))
-                                                  (reset :a 0)
-                                                  (println "second "(find-in :a)))
+;; (def ex-on-state* (c/println (ev* (on-state* (find-in :a)
+;;                                              (fn [state] (reset state :a 5)))
+;;                                   (cljs-obj {}))))
+
+;; (def ex-state (cljs-obj {}))
+
+;; (def ex2-on-state* (c/println (ev* (on-state* (in (println "first" (find-in :a))
+;;                                                   (reset :a 0)
+;;                                                   (println "second "(find-in :a)))
                                               
-                                              (fn [state]
-                                                (reset :b 55)
-                                                (reset state :a (obj-find-in :b)))
+;;                                               (fn [state]
+;;                                                 (reset :b 55)
+;;                                                 (reset state :a (obj-find-in :b)))
 
-                                              :local-state)
+;;                                               :local-state)
                                    
-                                   ex-state)))
+;;                                    ex-state)))
 
-(c/println (ev* (find-in []) ex-state))
+;; (c/println (ev* (find-in []) ex-state))
 
 
+(c/defn ^{:doc "replaces in the interpretation for the fct object the global state (l) with the state generated by the state generator"} on-obj*
+  ([^{:doc "fct object"} object
+    ^{:doc "state"} state]
+   
+   (construct* (c/fn [l]                                  
+                 (ev* object (ev* state l))))))
 
 
 (clojure.core/defn ^{:doc "generates a witness"} gen*
@@ -566,17 +590,14 @@
   ([^{:doc "keyword attached to the variable"} key
     ^{:doc "fct object"} object]
 
-   (c/let [key (if (c/keyword? key) [key] key)]
+   (construct* (c/fn [l]
+                 (c/let [v (cljs-this l key)
+                         e (ev* object l)
+                         r (if v
+                             nil
+                             (cljs-set l key e))]
+                   (cljs-this l key))))))
 
-    (construct* (c/fn [l]
-                  (c/let [v (cljs-this l key)
-                          e (ev* object l)
-                          r (if v
-                              nil
-                              (cljs-set l key e))]
-                          (cljs-this l key)))))))
-  
-  
 (def ^{:private true} ex1-init* 
   (c/println (gen* (c/let [a (init* :a (c/rand-int 10))
                            b (init* [:b] a)]
@@ -591,6 +612,25 @@
                            c 
                            (init* [:c] a)]
                      (list a b c)))))
+
+(c/defn ^{:doc "branch construction"} branch*
+
+  [^{:doc "branch to be returned"} key-return
+   ^{:doc "keyword destination"} key-destination
+   ^{:doc "keyword origin"} key-origin]
+  
+  (construct* (c/fn [l]
+                (c/let [v (cljs-this l key-destination)
+                        r (if v
+                            nil
+                            (cljs-set l key-destination (cljs-this-obj l key-origin)))]
+                  (cljs-this-obj l key-return)))))
+
+
+(def ^{:private true} ex-branch*
+  (c/println "ex-branch*" (gen* (in (reset :x 4)
+                                    (reset :y 5)
+                                    (branch* :local [:local :b] :x)))))
 
 
 (c/defn ^{:doc "variable key construction"} key*
@@ -1050,68 +1090,81 @@
            [:p [:em "render time: " a "ms"]]
            [timed-f]]))))
 
-(def click-count (init* :click-count 0))
+;; (def click-count (init* :click-count 0))
 
-(def state-ful-with-atom (fn []
-                           [:button {:on-click (fn [] (in (println (str click-count))
-                                                          (reset :click-count (inc click-count))))}
-                            [:p (call (c/fn [click-count] (c/str "I have been clicked " click-count))
-                                      click-count)]]))
+;; (def state-ful-with-atom (fn []
+;;                            [:button {:on-click (fn [] (in (println (str click-count))
+;;                                                           (reset :click-count (inc click-count))))}
+;;                             [:p (call (c/fn [click-count] (c/str "I have been clicked " click-count))
+;;                                       click-count)]]))
 
-(def count-atom (r/atom 0))
-(def crazy-state (r/atom {}))
+;; (def count-atom (r/atom 0))
+;; (def crazy-state (r/atom {}))
 
-;;(defonce click-count (r/atom 0))
+;; ;;(defonce click-count (r/atom 0))
 
-;; (c/defn state-ful-with-atom []
-;;   [:div {:on-click #(c/swap! click-count c/inc)}
-;;    "I have been clicked " @click-count " times."])
-
-
-(c/defn iter-component [state]
-  [:button {:on-click (c/fn [] (do (c/println "Here!")
-                                   (c/swap! crazy-state
-                                            (c/fn [a] {:component iter-component :count (c/inc (:count a))}))))}
-   "???????????????"
-   [:p (c/str "We are at: " state)]
-   [:div 
-    "Click here!"]])
-
-(c/reset! crazy-state {:component iter-component
-                       :count 0})
-
-(c/println crazy-state)
-
-(c/defn together []
-  [(:component (c/deref crazy-state))
-   (:count (c/deref crazy-state))])
+;; ;; (c/defn state-ful-with-atom []
+;; ;;   [:div {:on-click #(c/swap! click-count c/inc)}
+;; ;;    "I have been clicked " @click-count " times."])
 
 
+;; (c/defn iter-component [state]
+;;   [:button {:on-click (c/fn [] (do (c/println "Here!")
+;;                                    (c/swap! crazy-state
+;;                                             (c/fn [a] {:component iter-component :count (c/inc (:count a))}))))}
+;;    "???????????????"
+;;    [:p (c/str "We are at: " state)]
+;;    [:div 
+;;     "Click here!"]])
+
+;; (c/reset! crazy-state {:component iter-component
+;;                        :count 0})
+
+;; (c/println crazy-state)
+
+;; (c/defn together []
+;;   [(:component (c/deref crazy-state))
+;;    (:count (c/deref crazy-state))])
+
+
+(def click-count (init* :click-count 1))
 (def component (init* :component))
+(def tt (init* :tt "works?"))
+(def ttt (init* :ttt "strange?"))
+
 
 (defn f-iter-component [state]
-  [:button {:on-click (fn [] (in (println (= component f-iter-component))
-                                 (println (list (meta component) (meta f-iter-component)))
-                                 (reset :click-count (inc click-count)
+  [:button {:on-click (fn [] (in (reset :click-count (inc click-count)
                                         :component f-iter-component)))}
    "???????????????"
-   [:p (str "We are at: " state)]
-   [:div 
-    "Click here!"]])
+   [:p (str "We are at: " state)]])
+
+(defn another-comp []
+  [:div [:p (str  "click-count: " (find-in :new-click))]
+   [:button {:on-click (fn [] (in (reset :new-click (inc (find-in :new-click)))))}
+    "Second button"]
+   [:p (str  "tt: " tt)]
+   [:p (str "ttt: " ttt)]])
 
 (defn f-together []
-  (in (if-else (= nil component)
-               (in (reset :component f-iter-component)
-                   (println (meta component))))
-      [:div [component
-             click-count]
-       [:p (str (meta f-iter-component))]
-       [:p (str (meta (lift* (c/with-meta  (c/fn [] "??") {:doc "d"}))))]]))
+  (c/let [local (init* [:local :new-click] (obj-find-in :click-count))]
+    (fn []
+      (in
+       click-count
+       (println "this" this)
+       (println (obj-find-in [:click-count]))
+       (if-else (= nil component)
+                (in (reset :component f-iter-component)))
+       [:div
+        [component click-count]
+        ;;[:p (str "??? " local)]
+        [(on-obj* another-comp (branch* [:local] [:local :new-click] [:click-count]))]
+        ]))))
 
-(def re (c/fn ^{:doc "this"} g [] g))
+;; (def re (c/fn ^{:doc "this"} g [] g))
 
-(c/println (c/meta (re)))
-
+;; (c/println (c/meta (re)))
+ 
 (c/defn ^:export run []  
   (r/render (gen* [timing-wrapper f-together])
             (js/document.getElementById "app")))
